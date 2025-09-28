@@ -3,6 +3,8 @@
 namespace Idoneo\HumanoMailer;
 
 use Idoneo\HumanoMailer\Commands\HumanoMailerCommand;
+use Idoneo\HumanoMailer\Commands\MigrateDataCommand;
+use Idoneo\HumanoMailer\Commands\UpdateRoutesCommand;
 use Idoneo\HumanoMailer\Models\SystemModule;
 use Illuminate\Support\Facades\Schema;
 use Spatie\LaravelPackageTools\Package;
@@ -29,7 +31,11 @@ class HumanoMailerServiceProvider extends PackageServiceProvider
                 'create_message_delivery_links_table',
                 'create_message_types_table'
             ])
-            ->hasCommand(HumanoMailerCommand::class);
+            ->hasCommands([
+                HumanoMailerCommand::class,
+                MigrateDataCommand::class,
+                UpdateRoutesCommand::class,
+            ]);
     }
 
     /**
