@@ -14,13 +14,11 @@ return [
             'name' => 'SMTP',
             'enabled' => true,
         ],
-        'mailgun' => [
-            'name' => 'Mailgun',
-            'enabled' => env('MAILGUN_ENABLED', false),
-        ],
-        'mailbaby' => [
-            'name' => 'MailBaby',
-            'enabled' => env('MAILBABY_ENABLED', false),
+        'api' => [
+            'name' => 'Email API',
+            'enabled' => !empty(env('MAIL_API_KEY')),
+            'key' => env('MAIL_API_KEY'),
+            'domain' => env('MAIL_API_DOMAIN'),
         ],
     ],
 

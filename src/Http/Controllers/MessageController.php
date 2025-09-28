@@ -167,18 +167,18 @@ class MessageController extends Controller
 
         // Verificar configuración DNS para el dominio del remitente
         $dnsStatus = null;
-        $mailbabyUser = null;
+        $apiUser = null;
 
         if (! empty($emailConfig['from_address']))
         {
-            // Obtener el usuario de MailBaby desde la configuración
-            $mailbabyUser = config('services.mailbaby.enabled') ? env('MAIL_USERNAME') : null;
+            // Obtener configuración de API de email
+            $apiUser = config('humano-mailer.providers.api.enabled') ? env('MAIL_USERNAME') : null;
 
             // Verificar configuración DNS
             if (class_exists(\App\Helpers\DnsHelper::class)) {
                 $dnsStatus = \App\Helpers\DnsHelper::checkEmailDomainConfiguration(
                     $emailConfig['from_address'],
-                    $mailbabyUser,
+                    $apiUser,
                 );
             }
         }
@@ -192,7 +192,7 @@ class MessageController extends Controller
             'emailConfig' => $emailConfig,
             'contactsInCategory' => $contactsInCategory,
             'dnsStatus' => $dnsStatus,
-            'mailbabyUser' => $mailbabyUser,
+            'apiUser' => $apiUser,
         ]);
     }
 
@@ -579,19 +579,16 @@ class MessageController extends Controller
 
             switch ($emailProvider)
             {
-                case 'mailgun':
-                    if (config('services.mailgun.secret'))
+                case 'api':
+                    if (config('humano-mailer.providers.api.enabled'))
                     {
-                        Mail::mailer('mailgun')->to($user->email)->send(new \App\Mail\TestMessageMail($message, $testContact, $htmlContent));
+                        // Use configured email API (MailBaby, Mailgun, etc.)
+                        Mail::to($user->email)->send(new \App\Mail\TestMessageMail($message, $testContact, $htmlContent));
                     } else
                     {
-                        Log::warning('TEST SEND: Mailgun not configured, using default SMTP');
+                        Log::warning('TEST SEND: Email API not configured, using default SMTP');
                         Mail::to($user->email)->send(new \App\Mail\TestMessageMail($message, $testContact, $htmlContent));
                     }
-                    break;
-                case 'mailbaby':
-                    Log::warning('TEST SEND: MailBaby API not supported for test emails, using SMTP');
-                    Mail::to($user->email)->send(new \App\Mail\TestMessageMail($message, $testContact, $htmlContent));
                     break;
                 case 'smtp':
                 default:

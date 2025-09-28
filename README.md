@@ -40,22 +40,31 @@ php artisan vendor:publish --tag="humano-mailer-config"
 
 The package automatically registers the "Mailer" module in your application. Configure your email providers in the `.env` file:
 
+### SMTP Configuration (Default)
 ```env
-# SMTP Configuration
 MAIL_MAILER=smtp
 MAIL_HOST=your-smtp-host
 MAIL_PORT=587
 MAIL_USERNAME=your-username
 MAIL_PASSWORD=your-password
 MAIL_ENCRYPTION=tls
-
-# Mailgun (optional)
-MAILGUN_DOMAIN=your-domain
-MAILGUN_SECRET=your-secret
-
-# MailBaby (optional)
-MAILBABY_ENABLED=false
 ```
+
+### Email API Configuration (MailBaby, Mailgun, etc.)
+For external email service providers, use these simplified variables:
+
+```env
+# Generic API configuration - works with any email service
+MAIL_API_KEY=your-api-key-here
+MAIL_API_DOMAIN=your-domain.com  # Optional, only if your provider needs it
+
+# Examples:
+# For MailBaby: MAIL_API_KEY=your-mailbaby-api-key
+# For Mailgun: MAIL_API_KEY=your-mailgun-secret-key and MAIL_API_DOMAIN=your-domain.mailgun.org
+# For SendGrid: MAIL_API_KEY=your-sendgrid-api-key
+```
+
+The package will automatically detect if you have an API key configured and enable API-based sending.
 
 ## Usage
 
