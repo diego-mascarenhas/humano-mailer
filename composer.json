@@ -1,0 +1,77 @@
+{
+    "name": "idoneo/humano-mailer",
+    "description": "Email marketing and messaging system for Humano applications",
+    "keywords": [
+        "idoneo",
+        "laravel",
+        "humano",
+        "mailer",
+        "email",
+        "messaging",
+        "newsletter",
+        "campaigns"
+    ],
+    "homepage": "https://github.com/diego-mascarenhas/humano-mailer",
+    "license": "AGPL-3.0",
+    "authors": [
+        {
+            "name": "Diego Mascarenhas",
+            "email": "diego@idoneo.es",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3|^8.4",
+        "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "spatie/laravel-package-tools": "^1.13",
+        "yajra/laravel-datatables-oracle": "^10.11 || ^11.0",
+        "mailgun/mailgun-php": "^3.5",
+        "guzzlehttp/guzzle": "^7.0",
+        "tijsverkoyen/css-to-inline-styles": "^2.2"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.8 || ^8.0",
+        "orchestra/testbench": "^8.8 || ^9.0",
+        "pestphp/pest": "^2.20",
+        "pestphp/pest-plugin-arch": "^2.5",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Idoneo\\HumanoMailer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Idoneo\\HumanoMailer\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Idoneo\\HumanoMailer\\HumanoMailerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
