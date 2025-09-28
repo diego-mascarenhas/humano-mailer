@@ -5,7 +5,7 @@ A comprehensive email marketing and messaging system for Laravel applications, d
 ## Features
 
 - **Email Campaigns**: Create and manage email marketing campaigns
-- **Multiple Providers**: Support for SMTP, Mailgun, and MailBaby
+- **Multiple Providers**: Support for SMTP and generic email APIs (MailBaby, Mailgun, SendGrid, etc.)
 - **Message Templates**: Integration with template system for rich HTML emails
 - **Contact Management**: Target specific contact categories and statuses
 - **Tracking & Analytics**: Open tracking, click tracking, and detailed statistics
@@ -148,7 +148,7 @@ The package is designed for multi-tenant applications:
 
 - `spatie/laravel-package-tools`: Package development tools
 - `yajra/laravel-datatables-oracle`: DataTables integration
-- `mailgun/mailgun-php`: Mailgun API support
+- `guzzlehttp/guzzle`: HTTP client for API calls
 - `tijsverkoyen/css-to-inline-styles`: Email CSS processing
 
 ## License
