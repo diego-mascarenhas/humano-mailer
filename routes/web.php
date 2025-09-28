@@ -3,7 +3,7 @@
 use Idoneo\HumanoMailer\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['web', 'auth'])->group(function () {
+Route::middleware(['web', 'auth', 'verified'])->group(function () {
     // Messages
     Route::get('message/list', [MessageController::class, 'index'])->name('message-list');
     Route::get('message/create', [MessageController::class, 'create'])->name('message.create');
