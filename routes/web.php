@@ -1,6 +1,7 @@
 <?php
 
 use Idoneo\HumanoMailer\Http\Controllers\MessageController;
+use Idoneo\HumanoMailer\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
@@ -20,6 +21,15 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     Route::get('/send-sms', [MessageController::class, 'sendSmsMessage']);
     Route::get('/send-whatsapp', [MessageController::class, 'sendWhatsAppMessage']);
+
+    // Templates
+    Route::get('template/list', [TemplateController::class, 'index'])->name('template.index');
+    Route::get('template/create', [TemplateController::class, 'create'])->name('template.create');
+    Route::post('template', [TemplateController::class, 'store'])->name('template.store');
+    Route::get('template/{hashedId}', [TemplateController::class, 'show'])->name('template.show');
+    Route::get('template/{hashedId}/edit', [TemplateController::class, 'edit'])->name('template.edit');
+    Route::get('template/{hashedId}/editor', [TemplateController::class, 'editor'])->name('template.editor');
+    Route::delete('template/{hashedId}', [TemplateController::class, 'destroy'])->name('template.destroy');
 });
 
 // Public routes (no authentication required)

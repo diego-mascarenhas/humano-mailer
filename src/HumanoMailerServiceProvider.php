@@ -29,7 +29,8 @@ class HumanoMailerServiceProvider extends PackageServiceProvider
                 'create_message_deliveries_table',
                 'create_message_delivery_stats_table',
                 'create_message_delivery_links_table',
-                'create_message_types_table'
+                'create_message_types_table',
+                'create_templates_table'
             ])
             ->hasCommands([
                 HumanoMailerCommand::class,
