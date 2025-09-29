@@ -1,6 +1,6 @@
 <?php
 
-namespace Idoneo\HumanoMailer\Console\Commands;
+namespace Idoneo\HumanoMailer\Commands;
 
 use Idoneo\HumanoMailer\Jobs\SendMessageCampaignJob;
 use Idoneo\HumanoMailer\Models\MessageDelivery;
