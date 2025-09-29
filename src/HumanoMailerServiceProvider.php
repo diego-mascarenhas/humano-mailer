@@ -5,6 +5,9 @@ namespace Idoneo\HumanoMailer;
 use Idoneo\HumanoMailer\Commands\HumanoMailerCommand;
 use Idoneo\HumanoMailer\Commands\MigrateDataCommand;
 use Idoneo\HumanoMailer\Commands\UpdateRoutesCommand;
+use Idoneo\HumanoMailer\Console\Commands\SendScheduledDeliveries;
+use Idoneo\HumanoMailer\Console\Commands\ProcessActiveCampaigns;
+use Idoneo\HumanoMailer\Console\Commands\SendPendingMessages;
 use Idoneo\HumanoMailer\Models\SystemModule;
 use Illuminate\Support\Facades\Schema;
 use Spatie\LaravelPackageTools\Package;
@@ -36,6 +39,9 @@ class HumanoMailerServiceProvider extends PackageServiceProvider
                 HumanoMailerCommand::class,
                 MigrateDataCommand::class,
                 UpdateRoutesCommand::class,
+                SendScheduledDeliveries::class,
+                ProcessActiveCampaigns::class,
+                SendPendingMessages::class,
             ]);
     }
 
