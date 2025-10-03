@@ -232,7 +232,7 @@ class MessageController extends Controller
 
         $model->delete();
 
-        return response()->json(['success' => 'The record has been deleted.'], 200);
+        return redirect()->route('message-list')->with('success', 'The record has been deleted.');
     }
 
     public function sendSmsMessage(Request $request)

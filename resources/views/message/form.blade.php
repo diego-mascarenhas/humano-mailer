@@ -5,6 +5,7 @@
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.css')}}">
 @endsection
 
 @section('vendor-script')
@@ -13,10 +14,55 @@
 <script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
 @endsection
 
 @section('page-script')
 <script src="{{asset('assets/js/form-layouts.js')}}"></script>
+
+<script>
+// Delete message function with Sweet Alert - Updated v2
+function deleteMessage(messageId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Deseas eliminar este mensaje?",
+        icon: 'warning',
+        showCancelButton: true,
+        showDenyButton: false,
+        confirmButtonColor: '#7367f0',
+        cancelButtonColor: '#a8aaae',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create a form to submit the delete request
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/message/${messageId}`;
+            
+            // Add CSRF token
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            form.appendChild(csrfToken);
+            
+            // Add method override for DELETE
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            form.appendChild(methodInput);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
 
 <script>
 // Time preset functionality
@@ -100,6 +146,13 @@ document.querySelector('form').addEventListener('submit', function() {
 		<h4 class="mb-1 mt-3"><span class="text-muted fw-light">Messages/</span> {{ isset($data->id) ? 'Edit' : 'Create' }}</h4>
         <p class="text-muted">Manage your messages with ease and keep your audience engaged!</p>
     </div>
+    @if(isset($data->id))
+    <div class="d-flex align-content-center flex-wrap gap-3">
+        <button type="button" class="btn btn-danger" onclick="deleteMessage({{ $data->id }})">
+            <i class="ti ti-trash me-1"></i>Delete Message
+        </button>
+    </div>
+    @endif
 </div>
 
 <div class="card mb-4">
@@ -223,7 +276,6 @@ document.querySelector('form').addEventListener('submit', function() {
 				</div>
 			</div>
 		</div>
-		<hr class="my-4 mx-n4" />
 
 		<div class="pt-4">
 			<button type="submit" class="btn btn-primary me-sm-3 me-1">Send</button>
