@@ -9,7 +9,10 @@ use Idoneo\HumanoMailer\Commands\SendScheduledDeliveries;
 use Idoneo\HumanoMailer\Commands\ProcessActiveCampaigns;
 use Idoneo\HumanoMailer\Commands\SendPendingMessages;
 use Idoneo\HumanoMailer\Models\SystemModule;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -81,6 +84,31 @@ class HumanoMailerServiceProvider extends PackageServiceProvider
             }
         } catch (\Throwable $e) {
             // Silently ignore if host app hasn't migrated yet
+        }
+
+        // Ensure permissions exist for menus and access
+        try {
+            if (Schema::hasTable('permissions') && class_exists(Permission::class)) {
+                // Run the permissions seeder
+                if (class_exists(\HumanoMailer\Database\Seeders\MailerPermissionsSeeder::class)) {
+                    (new \HumanoMailer\Database\Seeders\MailerPermissionsSeeder())->run();
+                }
+
+                // Grant all mailer permissions to admin role
+                $adminRole = class_exists(Role::class) ? Role::where('name', 'admin')->first() : null;
+                if ($adminRole) {
+                    $mailerPermissions = Permission::where(function($query) {
+                        $query->where('name', 'LIKE', 'message.%')
+                            ->orWhere('name', 'LIKE', 'template.%');
+                    })->pluck('name')->toArray();
+                    
+                    if (!empty($mailerPermissions)) {
+                        $adminRole->givePermissionTo($mailerPermissions);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::debug('HumanoMailer: permissions setup skipped: ' . $e->getMessage());
         }
     }
 }
